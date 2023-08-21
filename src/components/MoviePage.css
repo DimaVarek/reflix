@@ -1,0 +1,30 @@
+.moviePage {
+    color: antiquewhite;
+}
+.back-button {
+    grid-area: h;
+    color: antiquewhite;
+    background-color: rgb(165, 108, 24);
+    height: 70%;
+    width: 10%;
+    margin: 10px;
+}
+.movie-container {
+    display: flex;
+    justify-content: center;
+}
+.movie-container-inner {
+    margin: 10px;
+    padding: 10px;
+    width: 50%;
+    background-color: #353434;
+    border-radius: 3px;
+}
+.image-container {
+    display: flex;
+    justify-content: center;
+}
+.label-span {
+    color: rgb(165, 108, 24);
+    font-weight: bold;
+}

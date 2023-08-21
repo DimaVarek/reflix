@@ -1,23 +1,56 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+import { useState } from 'react';
+import getUsersData from './utils/urersData';
+import HomePage from './components/HomePage';
+import CatalogPage from './components/CatalogPage';
+import MoviePage from './components/MoviePage';
+
 
 function App() {
+  const [users, setUsers] = useState(getUsersData())
+  const [currentUserId, setCurrentUserId] = useState(users[0].id)
+
+  const addMovie = (userID, movie, price)  => {
+    let userIndex = users.findIndex(user => user.id == userID)
+    if (userIndex !== -1 && users[userIndex].money - price > 0) {
+      let newUsers = [...users]
+      newUsers[userIndex].money -= price
+      newUsers[userIndex].rented.push(movie)
+      setUsers(newUsers)
+    }
+  }
+  
+  const remoteMovie = (userID, movie, price) => {
+    let userIndex = users.findIndex(user => user.id == userID)
+    let newUsers = [...users]
+    newUsers[userIndex].money += price
+    let movieIndex = newUsers[userIndex].rented.indexOf(movie.id)
+    newUsers[userIndex].rented.splice(movieIndex, 1)
+    setUsers(newUsers)
+  }
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage users={users}
+          setCurrentUserId={setCurrentUserId} />}/>
+
+          <Route path="/catalog" 
+            element={<CatalogPage 
+              users={users}
+              addMovie={addMovie}
+              remoteMovie={remoteMovie}
+              currentUserId={currentUserId} />} />
+              
+          <Route path="/movie/:movieid" 
+            element={<MoviePage currentUserId={currentUserId}/>}
+          />
+        </Routes>
+      </Router>
     </div>
   );
 }
