@@ -3,16 +3,27 @@ import UserInfo from "./UserInfo";
 import { useEffect, useState } from "react";
 import FilmsList from "./FilmsList";
 import './CatalogPage.css'
+import Modal from "./Modal";
 
 export default function CatalogPage(props) {
     let [searchRequest, setSearchRequest] = useState('')
     let [films, setFilms] = useState([])
+    let [showModal, setShowModal] = useState(false)
+    let [modalName, setModalName] = useState("")
 
     const addMovie = (movie) => {
         props.addMovie(props.currentUserId, movie, 3)
+        setModalName(movie.title)
+        ShowModal()
     }
     const remoteMovie = (movie) => {
         props.remoteMovie(props.currentUserId, movie, 3)
+    }
+    const ShowModal = () => {
+        setShowModal(true)
+    }
+    const closeModal = () => {
+        setShowModal(false)
     }
 
     useEffect(() => {
@@ -52,6 +63,7 @@ export default function CatalogPage(props) {
     return (
         <div className="catalog-page">
             <HomeButton />
+            {showModal? <Modal modalName={modalName} close={closeModal}/>: ""}
             <UserInfo user={props.users[props.users.findIndex(user => user.id == props.currentUserId)]} />
             <input className="search" onChange={changeSearch}></input>
             <div className="rented-list">
