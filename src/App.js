@@ -25,7 +25,7 @@ function App() {
     let userIndex = users.findIndex(user => user.id == userID)
     let newUsers = [...users]
     newUsers[userIndex].money += price
-    let movieIndex = newUsers[userIndex].rented.indexOf(movie.id)
+    let movieIndex = newUsers[userIndex].rented.findIndex(currentMovie =>currentMovie.id === movie.id)
     newUsers[userIndex].rented.splice(movieIndex, 1)
     setUsers(newUsers)
   }
